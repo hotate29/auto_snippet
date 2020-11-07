@@ -9,8 +9,8 @@ import config
 
 basicConfig(level=INFO)
 logger = getLogger(__name__)
-target_files = [(path, config.ext_lang[path[-2:]])
-                for path in glob.glob(f"**/{config.target}/**") if path[-2:] in config.ext_lang]
+target_files = [(path, config.ext_lang[path.split(".")[-1]])
+                for path in glob.glob(f"**/{config.target}/**") if path.split(".")[-1] in config.ext_lang]
 comment_get = re.compile(r"#\s*.*")
 remove_hash = re.compile(r"#\s*")
 
@@ -36,7 +36,7 @@ for path, lang in target_files:
             "body": snippet
         }
 
-with open("/snippet.code-snippets","w",encoding="utf-8") as f:
+with open("snippet.code-snippets","w",encoding="utf-8") as f:
     a = json.dumps(snippets,indent=4).replace(r"\\t",r"\t")
     f.write(a)
 logger.info("done!")
